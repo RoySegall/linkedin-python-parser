@@ -1,0 +1,9 @@
+language: python
+python: 3.6
+
+install:
+  - pip install pycodestyle flake8 isort apistar
+
+script:
+  - pycodestyle --show-source --max-line-length=120 --show-pep8 .
+  - apistar test
