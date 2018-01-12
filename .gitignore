@@ -1,1 +1,3 @@
 .idea
+rethinkdb_data
+__pycache__
