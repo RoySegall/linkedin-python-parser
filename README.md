@@ -18,7 +18,7 @@ Edit the settings.
 
 ## Installation
 ```bash
-pip3 install -r /path/to/requirements.txt
+pip3 install -r requirements.txt
 python install.py
 ```
 
