@@ -12,6 +12,9 @@ class RethinkDB(object):
     # A DB object.
     db = {}
 
+    # Holds the connection to DB
+    r = {}
+
     def setSettings(self, entity):
         """
         Constructor.
