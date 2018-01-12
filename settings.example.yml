@@ -3,3 +3,6 @@ db:
   port: 28015
   db: "linkedin"
 gecko: "/Users/roysegall/geckodriver"
+linkedin:
+  username: linkedin@segall.io
+  password: RoyLinkedIn1234
