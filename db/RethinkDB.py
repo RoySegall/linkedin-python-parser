@@ -1,5 +1,7 @@
 import rethinkdb as r
 
+from tools.SettingsManager import SettingsManager
+
 
 class RethinkDB(object):
     """
@@ -24,12 +26,8 @@ class RethinkDB(object):
         """
         self.entity = entity
 
-        # todo: get the settings form a json file.
-        settings = {'host': 'localhost', 'port': 28015, 'db': 'linkedin'}
-        self.connect(settings)
-
-        if not self.tableExists():
-            self.createTable()
+        db = SettingsManager().loadSettings()['db']
+        self.connect({'host': db['host'], 'port': db['port'], 'db': db['name']})
 
     def connect(self, settings):
         """
