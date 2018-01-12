@@ -1,18 +1,12 @@
 from apistar import Include, Route
 from apistar.frameworks.wsgi import WSGIApp as App
 from apistar.handlers import docs_urls, static_urls
-from models import Profile
-from werkzeug.debug.repr import dump
-import remodel.connection
-
-
-# todo: move to json file.
-remodel.connection.pool.configure(db="linkedin")
+from models.Profile import Profile
 
 
 def upload():
-    my_order = Profile.Profile.create(customer='Andrei', shop='GitHub')
-    dump(my_order)
+    entity = Profile()
+    return entity.insert({'name': 'roy', 'love': 'noy'})
 
 
 routes = [

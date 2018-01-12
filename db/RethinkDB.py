@@ -12,7 +12,7 @@ class RethinkDB(object):
     # A DB object.
     db = {}
 
-    def __init__(self, entity):
+    def setSettings(self, entity):
         """
         Constructor.
 
@@ -30,7 +30,7 @@ class RethinkDB(object):
         self.db = r.db(settings['db'])
 
     def createTable(self):
-        self.db.table_create(self.entity).run(self.r)
+        return self.db.table_create(self.entity).run(self.r)
 
     def insert(self, object):
         """
@@ -42,7 +42,10 @@ class RethinkDB(object):
         :return:
             The new object.
         """
-        self.db.table(self.entity).insert(object).run(self.r)
+        results = self.db.table(self.entity).insert(object).run(self.r)
+        object['id'] = results['generated_keys'][0]
+        return object
+
 
     def load(self, id):
         """

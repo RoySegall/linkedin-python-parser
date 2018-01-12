@@ -1,5 +1,7 @@
-from remodel.models import Model
+from db.RethinkDB import RethinkDB
 
 
-class Profile(Model):
-    pass
+class Profile(RethinkDB):
+
+    def __init__(self):
+        super().setSettings('profile')
