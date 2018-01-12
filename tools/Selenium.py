@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from tools.SettingsManager import  SettingsManager
+from tools.SettingsManager import SettingsManager
 
 
 class Selenium(object):
