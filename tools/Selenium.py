@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from tools.SettingsManager import  SettingsManager
 
 
 class Selenium(object):
@@ -16,8 +17,7 @@ class Selenium(object):
 
         :return:
         """
-        # todo: move to settings
-        self.driver = webdriver.Firefox(executable_path=r'/Users/roysegall/geckodriver')
+        self.driver = webdriver.Firefox(executable_path=SettingsManager().loadSettings()['gecko'])
 
     def close(self):
         self.driver.close()

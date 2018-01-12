@@ -2,3 +2,4 @@
 rethinkdb_data
 __pycache__
 venv
+settings.yml
