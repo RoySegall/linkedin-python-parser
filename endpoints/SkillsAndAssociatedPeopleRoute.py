@@ -27,4 +27,3 @@ class SkillsAndAssociatedPeopleRoute(BaseRoute):
 
     def skillsDelete(self):
         return {}
-
