@@ -1,9 +1,11 @@
 language: python
 python: 3.6
+addons:
+  rethinkdb: "2.3"
 
 install:
-  - pip install pycodestyle flake8 isort apistar
+  - pip install pycodestyle flake8 isort
+  - pip install -r requirements.txt
 
 script:
   - pycodestyle --show-source --max-line-length=120 --show-pep8 .
-  - apistar test

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/RoySegall/linkedin-python-parser.svg?branch=master)](https://travis-ci.org/RoySegall/linkedin-python-parser)
+
 # Linked in parser
 
 This project parsing LinkedIn profiles.
@@ -16,7 +18,7 @@ Edit the settings.
 
 ## Installation
 ```bash
-pip3 install -r /path/to/requirements.txt
+pip3 install -r requirements.txt
 python install.py
 ```
 
