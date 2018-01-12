@@ -25,12 +25,44 @@ class RethinkDB(object):
         settings = {'host': 'localhost', 'port': 28015, 'db': 'linkedin'}
         self.connect(settings)
 
+        if not self.tableExists():
+            self.createTable()
+
     def connect(self, settings):
+        """
+        Set up the connection to the DB.
+
+        :param settings:
+            The settings of the DB.
+
+        :return:
+        """
         self.r = r.connect(settings['host'], settings['port'])
         self.db = r.db(settings['db'])
 
     def createTable(self):
+        """
+        Creating the table of the entity.
+
+        :return:
+        """
         return self.db.table_create(self.entity).run(self.r)
+
+    def tableExists(self):
+        """
+        Checking if a table exists or not.
+
+        :return:
+        """
+        return self.entity in self.db.table_list().run(self.r)
+
+    def getTable(self):
+        """
+        Get the table of the entity.
+
+        :return:
+        """
+        return self.db.table(self.entity)
 
     def insert(self, object):
         """
@@ -42,10 +74,9 @@ class RethinkDB(object):
         :return:
             The new object.
         """
-        results = self.db.table(self.entity).insert(object).run(self.r)
+        results = self.getTable().insert(object).run(self.r)
         object['id'] = results['generated_keys'][0]
         return object
-
 
     def load(self, id):
         """
@@ -57,7 +88,7 @@ class RethinkDB(object):
         :return:
             The object from the DB.
         """
-        return {}
+        return self.getTable().get(id).run(self.r)
 
     def update(self, object):
         """
@@ -68,7 +99,7 @@ class RethinkDB(object):
 
         :return:
         """
-        return {}
+        return self.getTable().update(object).run(self.r)
 
     def delete(self, id):
         """
@@ -79,4 +110,4 @@ class RethinkDB(object):
 
         :return:
         """
-        return {}
+        return self.getTable().filter(r.row["id"] == id).delete().run(self.r)
