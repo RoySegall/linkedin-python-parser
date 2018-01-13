@@ -36,7 +36,7 @@ class ScrapeRoute(BaseRoute):
         # Pull the details.
         details = self.pull_details(user_id)
 
-        return {'d': user_id}
+        return details
 
         # Check if the user exists.
         profile = Profile()
@@ -64,8 +64,8 @@ class ScrapeRoute(BaseRoute):
 
         # Login using selenium.
         self.selenium.getPage('https://www.linkedin.com/uas/login?formSignIn=true'
-                         '&session_redirect=%2Fvoyager%2FloginRedirect.html'
-                         '&one_time_redirect=https%3A%2F%2Fwww.linkedin.com%2Fm%2Flogin%2F')
+                              '&session_redirect=%2Fvoyager%2FloginRedirect.html'
+                              '&one_time_redirect=https%3A%2F%2Fwww.linkedin.com%2Fm%2Flogin%2F')
 
         self.selenium.getElement('//a[@class="sign-in-link"]').click()
         self.selenium.getElement('//input[@id="session_key-login"]').send_keys(settings['linkedin']['username'])
@@ -73,7 +73,7 @@ class ScrapeRoute(BaseRoute):
         self.selenium.getElement('//form[@id="login"]//input[@type="submit"]').click()
 
         # Waiting for a couple of seconds. Looks that Linkedin has some kind of scraping protection.
-        time.sleep(10)
+        time.sleep(5)
         self.selenium.getPage('https://www.linkedin.com/')
 
     def pull_details(self, user_id):
@@ -99,7 +99,17 @@ class ScrapeRoute(BaseRoute):
         }
 
         multiple = ['list_skills', 'experience', 'education']
-        # Go to the page we need to scrape - profile page.
+        profile = {}
+
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
 
-        return {}
+        for key, xpath in xpaths.items():
+
+            if key in multiple:
+                continue
+
+            profile[key] = self.selenium.getElement(xpath)
+            print(xpath)
+        # Go to the page we need to scrape - profile page.
+
+        return profile
