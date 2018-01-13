@@ -1,4 +1,7 @@
 import time
+
+from apistar import Route
+
 from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile
 from tools.Selenium import Selenium
