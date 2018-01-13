@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from tools.SettingsManager import SettingsManager
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class Selenium(object):
@@ -32,7 +34,6 @@ class Selenium(object):
         :return:
         """
         self.driver.get(url)
-        return self
 
     def getElement(self, xpath):
         return self.driver.find_element(By.XPATH, xpath)

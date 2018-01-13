@@ -1,5 +1,5 @@
 from apistar.test import TestClient
-from app import app, upload
+from app import app
 
 
 def test_welcome():
