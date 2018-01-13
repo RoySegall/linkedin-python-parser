@@ -37,3 +37,6 @@ class Selenium(object):
 
     def getElement(self, xpath):
         return self.driver.find_element(By.XPATH, xpath)
+
+    def getElements(self, xpath):
+        return self.driver.find_elements(By.XPATH, xpath)

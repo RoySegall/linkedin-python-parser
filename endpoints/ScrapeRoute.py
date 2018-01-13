@@ -1,6 +1,7 @@
 import time
 
 from apistar import Route
+from selenium.common.exceptions import NoSuchElementException
 
 from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile
@@ -18,7 +19,7 @@ class ScrapeRoute(BaseRoute):
 
     def Routes(self):
         return [
-            Route('/{user_id}', 'post', self.scrape_post),
+            Route('/{user_id}', 'get', self.scrape_post),
         ]
 
     def scrape_post(self, user_id):
@@ -85,31 +86,89 @@ class ScrapeRoute(BaseRoute):
 
         :return:
         """
+        # Specify the list of xpaths.
         xpaths = {
             'name': '//div[contains(@class, "information")]//h1',
             'current_title': '//div[contains(@class, "information")]//h2',
             'current_position': '//div[contains(@class, "section__information")]//div[contains(@class, "experience")]'
                                 '//h3[contains(@class, "company")]',
             'summary': '//p[contains(@class, "section__summary-text")]',
-            'skills': '//div[@class="pv-skill-entity__pill-contents static-pill"]',
-            'experience': '//section[contains(@class, "background-section")]'
-                          '//section[contains(@class, "pv-profile-section experience-section")]',
-            'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
-                         'section-info--has-no-more ember-view"]',
+            'skills': '//div[@class="pv-skill-entity__header"]',
+            # 'experience': '//section[contains(@class, "background-section")]'
+            #               '//section[contains(@class, "pv-profile-section experience-section")]',
+            # 'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
+            #              'section-info--has-no-more ember-view"]',
         }
 
-        multiple = ['list_skills', 'experience', 'education']
-        profile = {}
+        #  Specify what is a special element so we could now how to handle it.
+        special = ['skills', 'experience', 'education']
 
+        # Ini the profile object with the user ID.
+        profile = {
+            'user_id': user_id,
+        }
+
+        # Go to the page we need to scrape - profile page.
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
+        time.sleep(5)
 
         for key, xpath in xpaths.items():
 
-            if key in multiple:
-                continue
-
-            profile[key] = self.selenium.getElement(xpath)
-            print(xpath)
-        # Go to the page we need to scrape - profile page.
+            if key in special:
+                if key == 'skills':
+                    profile[key] = self.get_list_of_skills(xpath)
+            else:
+                try:
+                    element = self.selenium.getElement(xpath)
+                except NoSuchElementException:
+                    print("An error with the element " + xpath)
+                    continue
+                profile[key] = element.text
 
         return profile
+
+    def get_list_of_skills(self, xpath):
+        """
+        We need to expand the list of skills.
+        :param xpath:
+        :return:
+        """
+        i = 0
+        while True:
+            i = i + 1
+            if i > 200:
+                # We still got a limit if the element was not found.
+                return {}
+
+            try:
+                self.selenium.getElement(xpath)
+                break
+            except NoSuchElementException:
+                self.selenium.driver.execute_script("window.scrollBy(0, 400);")
+
+        # Todo: check if the button exists.
+        self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
+                                 "additional-skills artdeco-container-card-action-bar']").click()
+
+        # Get all the list.
+        skills = []
+
+        # Don't know why we don't have the index.
+        i = 1
+        for item in self.selenium.getElements(xpath):
+            skill = item.find_element_by_xpath(
+                "(//span[contains(@class, 'pv-skill-entity__skill-name')])[" + str(i) + "]"
+            ).text
+            try:
+                rank = item.find_element_by_xpath(
+                    "(//span[contains(@class, 'pv-skill-entity__endorsement-count')])[" + str(i) + "]"
+                ).text
+            except NoSuchElementException:
+                rank = 0
+
+            data = {'skill': skill, 'rank': rank}
+            i = i + 1
+
+            skills.append(data)
+
+        return skills
