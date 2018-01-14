@@ -1,6 +1,6 @@
 import time
 
-from apistar import Route
+from apistar import Route, http
 from selenium.common.exceptions import NoSuchElementException
 
 from endpoints.BaseRoute import BaseRoute
@@ -23,7 +23,7 @@ class ScrapeRoute(BaseRoute):
             Route('/{user_id}', 'get', self.scrape_post),
         ]
 
-    def scrape_post(self, user_id):
+    def scrape_post(self, user_id, body: http.Body):
         """
         Scrape a user profile.
 
