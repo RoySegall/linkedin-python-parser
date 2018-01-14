@@ -88,14 +88,14 @@ class ScrapeRoute(BaseRoute):
         """
         # Specify the list of xpaths.
         xpaths = {
-            'name': '//div[contains(@class, "information")]//h1',
-            'current_title': '//div[contains(@class, "information")]//h2',
-            'current_position': '//div[contains(@class, "section__information")]//div[contains(@class, "experience")]'
-                                '//h3[contains(@class, "company")]',
-            'summary': '//p[contains(@class, "section__summary-text")]',
-            'skills': '//div[@class="pv-skill-entity__header"]',
-            # 'experience': '//section[contains(@class, "background-section")]'
-            #               '//section[contains(@class, "pv-profile-section experience-section")]',
+            # 'name': '//div[contains(@class, "information")]//h1',
+            # 'current_title': '//div[contains(@class, "information")]//h2',
+            # 'current_position': '//div[contains(@class, "section__information")]//div[contains(@class, "experience")]'
+            #                     '//h3[contains(@class, "company")]',
+            # 'summary': '//p[contains(@class, "section__summary-text")]',
+            # 'skills': '//div[@class="pv-skill-entity__header"]',
+            'experience': '//section[contains(@class, "experience-section")]//ul'
+                          '//li[not(contains(@class, "artdeco-carousel"))]',
             # 'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
             #              'section-info--has-no-more ember-view"]',
         }
@@ -117,6 +117,9 @@ class ScrapeRoute(BaseRoute):
             if key in special:
                 if key == 'skills':
                     profile[key] = self.get_list_of_skills(xpath)
+
+                if key == 'experience':
+                    profile[key] = self.get_experience_list(xpath)
             else:
                 try:
                     element = self.selenium.getElement(xpath)
@@ -172,3 +175,50 @@ class ScrapeRoute(BaseRoute):
             skills.append(data)
 
         return skills
+
+    def get_experience_list(self, xpath):
+        """
+        Get the list of past jobs.
+
+        :param xpath:
+            The xpath for the jobs.
+
+        :return:
+        """
+        number_of_jobs = len(self.selenium.getElements(xpath))
+
+        jobs = []
+        for i in range(1, number_of_jobs + 1):
+            base_xpath = xpath + "[" + str(i) + "]"
+
+            job_title = '//div[@class="pv-entity__summary-info"]//h3'
+            job_company = '//div[@class="pv-entity__summary-info"]//span[@class="pv-entity__secondary-title"]'
+            job_duration = '//div[@class="pv-entity__summary-info"]//h4[contains(@class, "pv-entity__date-range")]' \
+                           '//span[not(@class="visually-hidden")]'
+            job_description = '//div[@class="pv-entity__extra-details"]//p'
+            job = {}
+
+            try:
+                job['title'] = self.selenium.getElement(base_xpath + job_title).text
+            except NoSuchElementException:
+                job['title'] = ''
+
+            try:
+                job['duration'] = self.selenium.getElement(base_xpath + job_duration).text
+            except NoSuchElementException:
+                job['duration'] = ''
+
+            try:
+                job['company'] = self.selenium.getElement(base_xpath + job_company).text
+            except NoSuchElementException:
+                job['company'] = ''
+
+            try:
+                job['description'] = self.selenium.getElement(base_xpath + job_description).text
+            except NoSuchElementException:
+                job['description'] = ''
+
+            jobs.append(job)
+
+        return jobs
+
