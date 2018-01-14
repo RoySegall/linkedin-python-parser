@@ -1,3 +1,4 @@
 apistar
 rethinkdb
 PyYAML
+pytest

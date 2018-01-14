@@ -2,7 +2,6 @@ import time
 
 from apistar import Route, http
 from selenium.common.exceptions import NoSuchElementException
-
 from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile
 from tools.Selenium import Selenium
@@ -23,11 +22,12 @@ class ScrapeRoute(BaseRoute):
             Route('/{user_id}', 'get', self.scrape_post),
         ]
 
-    def scrape_post(self, user_id, body: http.Body):
+    def scrape_post(self, user_id):
         """
         Scrape a user profile.
 
         :return:
+            The person object as stored in the DB.
         """
         # Get the tools we need.
         self.selenium = Selenium()
@@ -35,9 +35,24 @@ class ScrapeRoute(BaseRoute):
         # Logging in.
         self.login()
 
-        # Pull the details.
-        details = self.pull_details(user_id)
+        # Pull the details and process them.
+        details = self.process_results(self.pull_details(user_id))
 
+        # Print the user object.
+        self.selenium.close()
+
+        return details
+
+    def process_results(self, details):
+        """
+        Processing the fields.
+
+        :param details:
+            The object we pulled from the DB.
+
+        :return:
+            The details object.
+        """
         # Check if the user exists.
         profile = Profile()
 
@@ -51,9 +66,6 @@ class ScrapeRoute(BaseRoute):
             details['id'] = results[0]['id']
             profile.update(details)
 
-        # Print the user object.
-        self.selenium.close()
-
         return details
 
     def login(self):
@@ -62,8 +74,6 @@ class ScrapeRoute(BaseRoute):
 
         :param selenium:
             The selenium object.
-
-        :return:
         """
         settings = SettingsManager().loadSettings()
 
@@ -89,6 +99,7 @@ class ScrapeRoute(BaseRoute):
             The selenium object. We need that in order to scrape the user details.
 
         :return:
+            The object of the person from linkdein.
         """
         # Specify the list of xpaths.
         xpaths = {
@@ -141,7 +152,10 @@ class ScrapeRoute(BaseRoute):
         """
         We need to expand the list of skills.
         :param xpath:
+            The xpath of the list of skills.
+
         :return:
+            The skills list.
         """
         self.selenium.scroll_to_element(xpath)
 
@@ -182,6 +196,7 @@ class ScrapeRoute(BaseRoute):
             The xpath for the jobs.
 
         :return:
+            The list of experience.
         """
         number_of_jobs = len(self.selenium.getElements(xpath))
 
@@ -216,6 +231,7 @@ class ScrapeRoute(BaseRoute):
             The base xpath.
 
         :return:
+            List of institutions.
         """
 
         self.selenium.scroll_to_element(xpath)
