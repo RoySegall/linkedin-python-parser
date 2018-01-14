@@ -1,4 +1,5 @@
 apistar
 rethinkdb
+selenium
 PyYAML
 pytest
