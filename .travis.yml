@@ -7,6 +7,8 @@ install:
   - pip install pycodestyle flake8 isort
   - pip install -r requirements.txt
   - pip install -U pytest
+  - cp settings.example.yml settings.yml
+  - python install.py
 
 script:
   # Checking for pep8 issues.
