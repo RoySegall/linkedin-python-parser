@@ -1,5 +1,8 @@
 db:
   host: localhost
   port: 28015
-  db: "linkedin"
+  name: "linkedin"
 gecko: "/Users/roysegall/geckodriver"
+linkedin:
+  username: linkedin@segall.io
+  password: RoyLinkedIn1234

@@ -1,0 +1,127 @@
+{
+  "user_id": "roy-segall-304b054a",
+  "name": "Roy Segall",
+  "current_title": "Team leader at Gizra",
+  "current_position": "gizra",
+  "summary": "Enthusiastic, Self-learned, highly motivated, love to learn and explore new tech. Through the years I how to master\nGit, find solutions over the web, taught my self new tech, contributed back to opensource communities, spoke at conferences and always love to handle new challenges. I learned web stack(HTML, CSS, JS), backend technologies(PHP, NodeJS, Python, Go lang), struggle with Travis CI(and other CI services), used frameworks as Drupal, AnguarlJS, elm, Vue JS and more.",
+  "skills": [
+    {
+      "skill": "PHP",
+      "rank": "21"
+    },
+    {
+      "skill": "OOP",
+      "rank": "16"
+    },
+    {
+      "skill": "Git",
+      "rank": "15"
+    },
+    {
+      "skill": "jQuery",
+      "rank": "15"
+    },
+    {
+      "skill": "JavaScript",
+      "rank": "14"
+    },
+    {
+      "skill": "Web Development",
+      "rank": "14"
+    },
+    {
+      "skill": "CSS",
+      "rank": "11"
+    },
+    {
+      "skill": "MySQL",
+      "rank": "11"
+    },
+    {
+      "skill": "HTML",
+      "rank": "9"
+    },
+    {
+      "skill": "AJAX",
+      "rank": "8"
+    },
+    {
+      "skill": "Drupal",
+      "rank": "8"
+    },
+    {
+      "skill": "SQL",
+      "rank": "6"
+    },
+    {
+      "skill": "Web Applications",
+      "rank": "4"
+    },
+    {
+      "skill": "Python",
+      "rank": "3"
+    },
+    {
+      "skill": "Cascading Style Sheets (CSS)",
+      "rank": "2"
+    },
+    {
+      "skill": "Product Management",
+      "rank": "1"
+    },
+    {
+      "skill": "SASS",
+      "rank": "1"
+    },
+    {
+      "skill": "Angular js",
+      "rank": 0
+    },
+    {
+      "skill": "Go",
+      "rank": 0
+    },
+    {
+      "skill": "MVC",
+      "rank": 0
+    }
+  ],
+  "experience": [
+    {
+      "title": "Developer",
+      "company": "gizra",
+      "duration": "Jun 2011 – Present",
+      "description": "Senior developer. Through the years I worked on various projects including:\n\nHarvard University - I consulted and worked with Harvard's website department. I developed complex features which needed by the faculty team. The system which powered Harvard's sites called OpenScholar and was contributed back to the Drupal community and serving other universities around the world.\n\nHebrew University In Jerusalem - Developed sites for the university staff.\n\nWorked with various technologies: Angular JS, Elm, Drupal(7,8), Bower, Gulp, Jekyll, NodeJS, Pusher, Socket IO and more.\n\nThrough the years the solutions we found would found them self as a contribution back to the open source community, run DrupalCamp Israel for 4 years and manged local meetups for the Drupal community."
+    }
+  ],
+  "education": [
+    {
+      "name": "The Open University",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": "2014 – 2015"
+    },
+    {
+      "name": "Ora Modiim high school",
+      "degree_name": "High school diplome",
+      "degree_secondary_title": "Computer Science 101",
+      "degree_grade": "",
+      "duration": "2003 – 2007"
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    }
+  ]
+}
