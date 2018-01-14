@@ -13,8 +13,10 @@ Edit the settings.
 
 ## Before installing
 
-1. Make sure you have a [RethinkDB](https://www.rethinkdb.com) instance running.
-2. Make sure the [geckdriver](https://github.com/mozilla/geckodriver) is located in a place you know
+1. Make sure you have a [RethinkDB](https://www.rethinkdb.com) instance
+running.
+2. Make sure the [geckdriver](https://github.com/mozilla/geckodriver)
+is located in a place you know
 3. Run [Selenium](http://www.seleniumhq.org/) in the background.
 4. Register to linkedin and set the user credentials under the
 `linkedin` property in the settings file you created.
