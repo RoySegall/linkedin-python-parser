@@ -7,6 +7,7 @@ from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile
 from tools.Selenium import Selenium
 from tools.SettingsManager import SettingsManager
+from rethinkdb import r
 
 
 class ScrapeRoute(BaseRoute):
@@ -37,20 +38,23 @@ class ScrapeRoute(BaseRoute):
         # Pull the details.
         details = self.pull_details(user_id)
 
-        return details
-
         # Check if the user exists.
         profile = Profile()
 
-        if 1 == 1:
-            profile.insert({})
+        cursor = profile.getTable().filter(r.row['user_id'] == details['user_id']).run(profile.r)
+
+        results = list(cursor)
+
+        if len(results) == 0:
+            details = profile.insert(details)
         else:
-            profile.update({})
+            details['id'] = results[0]['id']
+            profile.update(details)
 
         # Print the user object.
-        return {}
-        # selenium.close()
-        # return {'text': text}
+        self.selenium.close()
+
+        return details
 
     def login(self):
         """
@@ -247,4 +251,3 @@ class ScrapeRoute(BaseRoute):
             institutions.append(institution)
 
         return institutions
-
