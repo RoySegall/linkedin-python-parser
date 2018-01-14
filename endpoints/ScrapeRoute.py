@@ -88,16 +88,16 @@ class ScrapeRoute(BaseRoute):
         """
         # Specify the list of xpaths.
         xpaths = {
-            # 'name': '//div[contains(@class, "information")]//h1',
-            # 'current_title': '//div[contains(@class, "information")]//h2',
-            # 'current_position': '//div[contains(@class, "section__information")]//div[contains(@class, "experience")]'
-            #                     '//h3[contains(@class, "company")]',
-            # 'summary': '//p[contains(@class, "section__summary-text")]',
-            # 'skills': '//div[@class="pv-skill-entity__header"]',
+            'name': '//div[contains(@class, "information")]//h1',
+            'current_title': '//div[contains(@class, "information")]//h2',
+            'current_position': '//div[contains(@class, "section__information")]//div[contains(@class, "experience")]'
+                                '//h3[contains(@class, "company")]',
+            'summary': '//p[contains(@class, "section__summary-text")]',
+            'skills': '//div[@class="pv-skill-entity__header"]',
             'experience': '//section[contains(@class, "experience-section")]//ul'
                           '//li[not(contains(@class, "artdeco-carousel"))]',
-            # 'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
-            #              'section-info--has-no-more ember-view"]',
+            'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
+                         'section-info--has-no-more ember-view"]//li',
         }
 
         #  Specify what is a special element so we could now how to handle it.
@@ -120,6 +120,9 @@ class ScrapeRoute(BaseRoute):
 
                 if key == 'experience':
                     profile[key] = self.get_experience_list(xpath)
+
+                if key == 'education':
+                    profile[key] = self.get_education_list(xpath)
             else:
                 try:
                     element = self.selenium.getElement(xpath)
@@ -136,22 +139,13 @@ class ScrapeRoute(BaseRoute):
         :param xpath:
         :return:
         """
-        i = 0
-        while True:
-            i = i + 1
-            if i > 200:
-                # We still got a limit if the element was not found.
-                return {}
-
-            try:
-                self.selenium.getElement(xpath)
-                break
-            except NoSuchElementException:
-                self.selenium.driver.execute_script("window.scrollBy(0, 400);")
+        self.selenium.scroll_to_element(xpath)
 
         # Todo: check if the button exists.
+        time.sleep(10)
         self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
                                  "additional-skills artdeco-container-card-action-bar']").click()
+        time.sleep(5)
 
         # Get all the list.
         skills = []
@@ -190,35 +184,67 @@ class ScrapeRoute(BaseRoute):
         jobs = []
         for i in range(1, number_of_jobs + 1):
             base_xpath = xpath + "[" + str(i) + "]"
-
-            job_title = '//div[@class="pv-entity__summary-info"]//h3'
-            job_company = '//div[@class="pv-entity__summary-info"]//span[@class="pv-entity__secondary-title"]'
-            job_duration = '//div[@class="pv-entity__summary-info"]//h4[contains(@class, "pv-entity__date-range")]' \
-                           '//span[not(@class="visually-hidden")]'
-            job_description = '//div[@class="pv-entity__extra-details"]//p'
             job = {}
 
-            try:
-                job['title'] = self.selenium.getElement(base_xpath + job_title).text
-            except NoSuchElementException:
-                job['title'] = ''
+            local_xpaths = {
+                'title': '//div[@class="pv-entity__summary-info"]//h3',
+                'company': '//div[@class="pv-entity__summary-info"]//span[@class="pv-entity__secondary-title"]',
+                'duration': '//div[@class="pv-entity__summary-info"]'
+                            '//h4[contains(@class, "pv-entity__date-range")]//span[not(@class="visually-hidden")]',
+                'description': '//div[@class="pv-entity__extra-details"]//p',
+            }
 
-            try:
-                job['duration'] = self.selenium.getElement(base_xpath + job_duration).text
-            except NoSuchElementException:
-                job['duration'] = ''
-
-            try:
-                job['company'] = self.selenium.getElement(base_xpath + job_company).text
-            except NoSuchElementException:
-                job['company'] = ''
-
-            try:
-                job['description'] = self.selenium.getElement(base_xpath + job_description).text
-            except NoSuchElementException:
-                job['description'] = ''
+            for key, local_xpath in local_xpaths.items():
+                try:
+                    job[key] = self.selenium.getElement(base_xpath + local_xpath).text
+                except NoSuchElementException:
+                    job[key] = ''
 
             jobs.append(job)
 
         return jobs
+
+    def get_education_list(self, xpath):
+        """
+        Get the list of education list.
+
+        :param xpath:
+            The base xpath.
+
+        :return:
+        """
+
+        self.selenium.scroll_to_element(xpath)
+        number_of_educations = len(self.selenium.getElements(xpath))
+
+        institutions = []
+
+        for i in range(1, number_of_educations + 1):
+            base_xpath = xpath + "[" + str(i) + "]"
+
+            local_xpaths = {
+                'name': '//h3[contains(@class, "pv-entity__school-name")]',
+                'degree_name': '//div[@class="pv-entity__degree-info"]'
+                               '//p[contains(@class, "pv-entity__degree-name")]//span[not(@class="visually-hidden")]',
+                'degree_secondary_title': '//div[@class="pv-entity__degree-info"]'
+                                          '//p[contains(@class, "pv-entity__fos")]'
+                                          '//span[not(@class="visually-hidden")]',
+                'degree_grade': '//div[@class="pv-entity__degree-info"]'
+                                '//p[contains(@class, "pv-entity__grade")]'
+                                '//span[not(@class="visually-hidden")]',
+                'duration': '//p[contains(@class, "pv-entity__dates")]//span[not(@class="visually-hidden")]',
+            }
+
+            institution = {}
+
+            # todo For some reason, roy-segall-304b054a, has 2 empty items. check why.
+            for key, local_xpath in local_xpaths.items():
+                try:
+                    institution[key] = self.selenium.getElement(base_xpath + local_xpath).text
+                except NoSuchElementException:
+                    institution[key] = ''
+
+            institutions.append(institution)
+
+        return institutions
 
