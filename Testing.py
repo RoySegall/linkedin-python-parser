@@ -27,7 +27,7 @@ class Testing(object):
         # Loading it from the DB.
         loaded_dummy = dummy.getTable().get(pizza['id'])
 
-        assert loaded_dummy['food'] == pizza['fdood']
+        assert loaded_dummy['food'] == pizza['food']
 
     def test_base_scrape(self):
         """
