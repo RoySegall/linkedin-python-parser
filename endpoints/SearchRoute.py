@@ -1,4 +1,4 @@
-from apistar import Route
+from apistar import Route, http
 
 from endpoints.BaseRoute import BaseRoute
 
@@ -10,10 +10,10 @@ class SearchRoute(BaseRoute):
 
     def Routes(self):
         return [
-            Route('/', 'POST', self.search),
+            Route('', 'POST', self.search),
         ]
 
-    def search(self):
+    def search(self, body: http.Body):
         """
         Searching for a user in the DB.
 
@@ -22,6 +22,8 @@ class SearchRoute(BaseRoute):
         # Get the search text.
 
         # Search in the text in the name, title, position, summary.
+
+        print(body.decode())
 
         score = self.calculate_score("", {})
 
