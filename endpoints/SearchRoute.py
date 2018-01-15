@@ -1,6 +1,10 @@
-from apistar import Route, http
+import json
+
+from apistar import Route, http, Response
+from rethinkdb import r
 
 from endpoints.BaseRoute import BaseRoute
+from models.Profile import Profile
 
 
 class SearchRoute(BaseRoute):
@@ -19,15 +23,35 @@ class SearchRoute(BaseRoute):
 
         :return:
         """
+        payload = json.loads(body.decode())
+        print(payload['text'])
+
+        if payload['text'] is None:
+            return Response({'message': 'The text property it empty'}, status=401)
+
         # Get the search text.
+
+        # r.db("linkedin").table('profile').filter(function(profile)
+        # {
+        # return profile("skills").contains(function(skill)
+        # {
+        # return skill("skill").eq("Go")
+        # })
+        # })
+
+        profile = Profile()
+
+        cursor = profile \
+            .getTable() \
+            .filter(lambda profile:
+                    profile["skills"].contains(lambda skills: skills['skill'].eq(payload['text']))) \
+            .run(profile.r)
 
         # Search in the text in the name, title, position, summary.
 
-        print(body.decode())
-
         score = self.calculate_score("", {})
 
-        return {}
+        return list(cursor)
 
     def calculate_score(self, text, user_object):
         """
