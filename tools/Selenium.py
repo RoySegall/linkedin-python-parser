@@ -54,4 +54,4 @@ class Selenium(object):
                 if self.getElement(xpath).is_displayed():
                     break
             except NoSuchElementException:
-                self.driver.execute_script("window.scrollBy(0, 400);")
+                self.driver.execute_script("window.scrollBy(0, 1000);")

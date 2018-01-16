@@ -36,12 +36,14 @@ class ScrapeRoute(BaseRoute):
         self.login()
 
         # Pull the details and process them.
-        details = self.process_results(self.pull_details(user_id))
+        print(self.pull_details(user_id))
+
+        # details = self.process_results(self.pull_details(user_id))
 
         # Print the user object.
         self.selenium.close()
 
-        return details
+        return {}
 
     def process_results(self, details):
         """
@@ -101,6 +103,7 @@ class ScrapeRoute(BaseRoute):
         :return:
             The object of the person from linkdein.
         """
+
         # Specify the list of xpaths.
         xpaths = {
             'name': '//div[contains(@class, "information")]//h1',
@@ -126,6 +129,10 @@ class ScrapeRoute(BaseRoute):
         # Go to the page we need to scrape - profile page.
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         time.sleep(5)
+
+        associated_profiles = self.get_associated_profiles()
+        print(associated_profiles)
+        return
 
         for key, xpath in xpaths.items():
 
@@ -267,3 +274,37 @@ class ScrapeRoute(BaseRoute):
             institutions.append(institution)
 
         return institutions
+
+    def get_associated_profiles(self):
+        """
+        Get the list of all the associated profile with the account.
+        :return:
+        """
+        connections_link = self.selenium.getElement("//div[contains(@class, 'connections-section')]")
+
+        if not connections_link.is_displayed():
+            print('The connections section is blocked or unreachable for now.')
+            return {}
+
+        # Go to the page.
+        connections_link.click()
+        time.sleep(5)
+
+        base_xpath = "//div[contains(@class, 'search-results__cluster-content')]" \
+                     "//li"
+
+        number_of_connections = len(self.selenium.getElements(base_xpath))
+        print(number_of_connections)
+
+        names = []
+
+        for i in range(1, number_of_connections + 1):
+            self.selenium.driver.execute_script("window.scrollBy(0, 400);")
+            time.sleep(5)
+            name_xpath = base_xpath + "[" + str(i) + "]//div[contains(@class, 'search-result__info')]" \
+                                                     "//a[contains(@class, 'search-result__result-link')]" \
+                                                     "//h3" \
+                                                     "//span[@class='name actor-name']"
+            names.append(self.selenium.getElement(name_xpath).text)
+        print(names)
+        return {}
