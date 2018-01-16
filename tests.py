@@ -65,4 +65,3 @@ def test_search_by_name():
     assert json_response[0]['current_position'] == 'Netcraft Israel'
     assert json_response[0]['current_title'] == 'Frontend Developer at Netcraft Israel'
     assert json_response[0]['name'] == 'David Bronfen'
-
