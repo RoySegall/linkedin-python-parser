@@ -24,34 +24,35 @@ class SearchRoute(BaseRoute):
         :return:
         """
         payload = json.loads(body.decode())
-        print(payload['text'])
 
         if payload['text'] is None:
             return Response({'message': 'The text property it empty'}, status=401)
 
         # Get the search text.
+        text = payload['text']
 
-        # r.db("linkedin").table('profile').filter(function(profile)
-        # {
-        # return profile("skills").contains(function(skill)
-        # {
-        # return skill("skill").eq("Go")
-        # })
-        # })
-
+        # Init the query operation.
         profile = Profile()
-
-        cursor = profile \
+        profiles = profile \
             .getTable() \
-            .filter(lambda profile:
-                    profile["skills"].contains(lambda skills: skills['skill'].eq(payload['text']))) \
+            .filter(
+                lambda document:
+                    document['name'].match(text)
+                    | document['current_position'].match(text)
+                    | document['current_title'].match(text)
+                    | document['summary'].match(text)
+                    | document['skills'].contains(lambda skills: skills['skill'].match(text))
+            ) \
             .run(profile.r)
 
         # Search in the text in the name, title, position, summary.
+        results = []
 
-        score = self.calculate_score("", {})
+        for profile in profiles:
+            profile['match'] = self.calculate_score(text, profile)
+            results.append(profile)
 
-        return list(cursor)
+        return results
 
     def calculate_score(self, text, user_object):
         """
