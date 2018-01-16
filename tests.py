@@ -26,6 +26,15 @@ def test_skills_searching():
     # Search by skills.
     json_response = client.post('/search-by-skills', json={'skill': 'Drupal'})
 
+    # Basic search.
+    assert json_response[0]['current_position'] == 'gizra'
+    assert json_response[0]['current_title'] == 'Team leader at Gizra'
+    assert json_response[0]['name'] == 'Roy Segall'
+    assert json_response[0]['match'] == 4
+
+    # Search by skills.
+    json_response = client.post('/search', json={'text': 'Drupal'})
+
     assert json_response.json()[0]['match'] == 13
 
     # Search for JavaScript.
