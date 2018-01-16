@@ -18,4 +18,4 @@ script:
   - apistar test
 
   # Running unit tests.
-  - pytest UnitTests.py
+  - pytest Testing.py

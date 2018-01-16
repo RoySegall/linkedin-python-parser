@@ -3,7 +3,7 @@ import json
 from endpoints.ScrapeRoute import ScrapeRoute
 
 
-class UnitTests(object):
+class Testing(object):
 
     def test_rethinkdb(self):
         """
