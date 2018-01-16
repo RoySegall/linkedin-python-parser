@@ -7,17 +7,17 @@ from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile
 
 
-class SearchRoute(BaseRoute):
+class SearchBySkillsRoute(BaseRoute):
     """
     This is the route for searching for previous scraped profiles.
     """
 
     def Routes(self):
         return [
-            Route('', 'POST', self.search),
+            Route('', 'POST', self.skills),
         ]
 
-    def search(self, body: http.Body):
+    def skills(self, body: http.Body):
         """
         Searching for a user in the DB.
 
@@ -25,11 +25,11 @@ class SearchRoute(BaseRoute):
         """
         payload = json.loads(body.decode())
 
-        if payload['text'] is None:
-            return Response({'message': 'The text property it empty'}, status=401)
+        if payload['skill'] is None:
+            return Response({'message': 'The skill property is empty'}, status=401)
 
         # Get the search text.
-        text = payload['text']
+        text = payload['skill']
 
         # Init the query operation.
         profile = Profile()
@@ -37,11 +37,7 @@ class SearchRoute(BaseRoute):
             .getTable() \
             .filter(
                 lambda document:
-                    document['name'].match(text)
-                    | document['current_position'].match(text)
-                    | document['current_title'].match(text)
-                    | document['summary'].match(text)
-                    | document['skills'].contains(lambda skills: skills['skill'].match(text))
+                    document['skills'].contains(lambda skills: skills['skill'].match(text))
             ) \
             .run(profile.r)
 
