@@ -57,6 +57,14 @@ class RethinkDB(object):
         """
         return self.entity in self.db.table_list().run(self.r)
 
+    def deleteTable(self):
+        """
+        Deleting a table from the DB.
+
+        :return:
+        """
+        return self.db.table_drop(self.entity).run(self.r)
+
     def getTable(self):
         """
         Get the table of the entity.
