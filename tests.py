@@ -1,4 +1,6 @@
 import json
+import pdb
+
 from apistar.test import TestClient
 from app import app
 from models.Profile import Profile
@@ -26,22 +28,14 @@ def test_skills_searching():
     # Search by skills.
     json_response = client.post('/search-by-skills', json={'skill': 'Drupal'})
 
-    # Basic search.
-    assert json_response[0]['current_position'] == 'gizra'
-    assert json_response[0]['current_title'] == 'Team leader at Gizra'
-    assert json_response[0]['name'] == 'Roy Segall'
-    assert json_response[0]['match'] == 4
-
-    # Search by skills.
-    json_response = client.post('/search', json={'text': 'Drupal'})
-
     assert json_response.json()[0]['match'] == 13
 
     # Search for JavaScript.
     json_response = client.post('/search-by-skills', json={'skill': 'JavaScript'})
     matches = {
         'nirgn': 18,
-        'roy-segall-304b054a': 18
+        'roy-segall-304b054a': 18,
+        'davidbronfen': 12
     }
 
     for profile in json_response.json():
@@ -64,4 +58,11 @@ def test_search_by_name():
     assert json_response[0]['current_title'] == 'Team leader at Gizra'
     assert json_response[0]['name'] == 'Roy Segall'
 
-    assert 1 == 1
+    response = client.post('/search-by-name', json={'name': 'David'})
+    json_response = response.json()
+
+    # Basic search.
+    assert json_response[0]['current_position'] == 'Netcraft Israel'
+    assert json_response[0]['current_title'] == 'Frontend Developer at Netcraft Israel'
+    assert json_response[0]['name'] == 'David Bronfen'
+

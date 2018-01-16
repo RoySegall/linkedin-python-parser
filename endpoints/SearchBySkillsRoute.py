@@ -14,10 +14,10 @@ class SearchBySkillsRoute(BaseRoute):
 
     def Routes(self):
         return [
-            Route('', 'POST', self.search),
+            Route('', 'POST', self.skills),
         ]
 
-    def search(self, body: http.Body):
+    def skills(self, body: http.Body):
         """
         Searching for a user in the DB.
 
@@ -29,7 +29,7 @@ class SearchBySkillsRoute(BaseRoute):
             return Response({'message': 'The skill property is empty'}, status=401)
 
         # Get the search text.
-        text = payload['text']
+        text = payload['skill']
 
         # Init the query operation.
         profile = Profile()

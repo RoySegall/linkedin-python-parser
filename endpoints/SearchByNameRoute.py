@@ -14,12 +14,12 @@ class SearchByNameRoute(BaseRoute):
 
     def Routes(self):
         return [
-            Route('', 'POST', self.search),
+            Route('', 'POST', self.name),
         ]
 
-    def search(self, body: http.Body):
+    def name(self, body: http.Body):
         """
-        Searching for a user in the DB.
+        Searching for a name in the DB.
 
         :return:
         """
