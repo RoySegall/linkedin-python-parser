@@ -44,3 +44,7 @@ Scraping a user is very easy. Create a `POST` request to
 ID.
 
 *You can ge the the user ID from the address.*
+
+### Searching
+The searching end point is very versatile - can search for people and
+skills at once.

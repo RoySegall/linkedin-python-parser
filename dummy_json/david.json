@@ -1,0 +1,141 @@
+{
+  "user_id": "davidbronfen",
+  "name": "David Bronfen",
+  "current_title": "Frontend Developer at Netcraft Israel",
+  "current_position": "Netcraft Israel",
+  "skills": [
+    {
+      "skill": "JavaScript",
+      "rank": "7"
+    },
+    {
+      "skill": "Angular 4",
+      "rank": "2"
+    },
+    {
+      "skill": "HTML5",
+      "rank": "5"
+    },
+    {
+      "skill": "CSS",
+      "rank": "7"
+    },
+    {
+      "skill": "Web Development",
+      "rank": "5"
+    },
+    {
+      "skill": "jQuery",
+      "rank": "3"
+    },
+    {
+      "skill": "PHP",
+      "rank": "4"
+    },
+    {
+      "skill": "Web Design",
+      "rank": "4"
+    },
+    {
+      "skill": "Photography",
+      "rank": "10"
+    },
+    {
+      "skill": "Portrait Photography",
+      "rank": "7"
+    },
+    {
+      "skill": "Commercial Photography",
+      "rank": "7"
+    },
+    {
+      "skill": "Event Photography",
+      "rank": "8"
+    },
+    {
+      "skill": "Wedding Photography",
+      "rank": "6"
+    },
+    {
+      "skill": "Studio Photography",
+      "rank": "7"
+    },
+    {
+      "skill": "Photoshop",
+      "rank": "8"
+    },
+    {
+      "skill": "Photo Editor",
+      "rank": "7"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Frontend Developer",
+      "company": "Netcraft Israel",
+      "duration": "Aug 2017 – Present",
+      "description": ""
+    },
+    {
+      "title": "Advertising Photography (for web sites, catalogs, etc), events and conferences photography",
+      "company": "Freelance photographer",
+      "duration": "Jan 2010 – Present",
+      "description": "Professional photography services\nSpecializing in studio photography (advertising, promotional, portrait and product)"
+    },
+    {
+      "title": "Developer",
+      "company": "Gizra",
+      "duration": "May 2016 – Aug 2017",
+      "description": ""
+    },
+    {
+      "title": "Web Developer",
+      "company": "restart - IT | Web | Mobile",
+      "duration": "Sep 2015 – 2016",
+      "description": "Full stack developer"
+    },
+    {
+      "title": "Consulting and sales of professional photo equipment",
+      "company": "Erlich Labs",
+      "duration": "May 2009 – Jul 2011",
+      "description": "Consulting and sales of professional photo equipment"
+    }
+  ],
+  "education": [
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    },
+    {
+      "name": "",
+      "degree_name": "",
+      "degree_secondary_title": "",
+      "degree_grade": "",
+      "duration": ""
+    }
+  ]
+}

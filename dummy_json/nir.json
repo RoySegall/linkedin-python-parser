@@ -1,0 +1,253 @@
+{
+  "user_id": "nirgn",
+  "name": "Nir Galon",
+  "current_title": "Lead Software Engineer at webintPro Ltd.",
+  "current_position": "webintPro Ltd.",
+  "summary": "Dedicated, quality-focused professional with a strong sense of responsibility, team spirit and good human skills. -\nActive in the open source community. - Broad system view with the ability to drill down to the fine details. - Fast learning curve, adapting and embracing new technologies. Personal website: www.nirgn.com Other profiles: • GitHub: https://github.com/nirgn975 • Stack Overflow: http://stackoverflow.com/users/2040160/nir • Code School: www.codeschool.com/users/349833 • TreeHouse: www.teamtreehouse.com/nirgalon",
+  "skills": [
+    {
+      "skill": "Python",
+      "rank": "9"
+    },
+    {
+      "skill": "Git",
+      "rank": "9"
+    },
+    {
+      "skill": "Test Driven Development",
+      "rank": "3"
+    },
+    {
+      "skill": "Django",
+      "rank": "4"
+    },
+    {
+      "skill": "Node.js",
+      "rank": "1"
+    },
+    {
+      "skill": "Angular",
+      "rank": "1"
+    },
+    {
+      "skill": "HTML5",
+      "rank": "3"
+    },
+    {
+      "skill": "MongoDB",
+      "rank": "1"
+    },
+    {
+      "skill": "Express.js",
+      "rank": "1"
+    },
+    {
+      "skill": "Unit Testing",
+      "rank": "1"
+    },
+    {
+      "skill": "Open Source",
+      "rank": "9"
+    },
+    {
+      "skill": "Docker",
+      "rank": "1"
+    },
+    {
+      "skill": "AJAX",
+      "rank": "6"
+    },
+    {
+      "skill": "SASS",
+      "rank": "5"
+    },
+    {
+      "skill": "Software Development",
+      "rank": "5"
+    },
+    {
+      "skill": "Algorithms",
+      "rank": "2"
+    },
+    {
+      "skill": "Data Structures",
+      "rank": "2"
+    },
+    {
+      "skill": "Bootstrap",
+      "rank": "5"
+    },
+    {
+      "skill": "Teamwork",
+      "rank": "11"
+    },
+    {
+      "skill": "Design Patterns",
+      "rank": "1"
+    },
+    {
+      "skill": "Jasmine Framework",
+      "rank": "1"
+    },
+    {
+      "skill": "Rethinkdb",
+      "rank": "1"
+    },
+    {
+      "skill": "Nginx",
+      "rank": "1"
+    },
+    {
+      "skill": "Linux",
+      "rank": "15"
+    },
+    {
+      "skill": "Web Applications",
+      "rank": "6"
+    },
+    {
+      "skill": "JavaScript",
+      "rank": "16"
+    },
+    {
+      "skill": "jQuery",
+      "rank": "13"
+    },
+    {
+      "skill": "Java",
+      "rank": "9"
+    },
+    {
+      "skill": "PostgreSQL",
+      "rank": "3"
+    },
+    {
+      "skill": "CSS3",
+      "rank": "7"
+    },
+    {
+      "skill": "TCP/IP",
+      "rank": "3"
+    },
+    {
+      "skill": "PHP",
+      "rank": "8"
+    },
+    {
+      "skill": "SQL",
+      "rank": "10"
+    },
+    {
+      "skill": "MySQL",
+      "rank": "9"
+    },
+    {
+      "skill": "Telecommunications",
+      "rank": "9"
+    },
+    {
+      "skill": "OOP",
+      "rank": "5"
+    },
+    {
+      "skill": "Android",
+      "rank": "15"
+    },
+    {
+      "skill": "Mobile Devices",
+      "rank": "13"
+    },
+    {
+      "skill": "Arduino",
+      "rank": "1"
+    },
+    {
+      "skill": "Machine Learning",
+      "rank": 0
+    },
+    {
+      "skill": "Data Mining",
+      "rank": 0
+    },
+    {
+      "skill": "Data Analysis",
+      "rank": 0
+    },
+    {
+      "skill": "Web Crawling",
+      "rank": 0
+    },
+    {
+      "skill": "Web Scraping",
+      "rank": 0
+    },
+    {
+      "skill": "Big Data",
+      "rank": 0
+    },
+    {
+      "skill": "Deep Learning",
+      "rank": 0
+    },
+    {
+      "skill": "Go",
+      "rank": 0
+    },
+    {
+      "skill": "Flask",
+      "rank": 0
+    },
+    {
+      "skill": "React.js",
+      "rank": 0
+    }
+  ],
+  "experience": [
+    {
+      "title": "Lead Software Engineer",
+      "company": "webintPro Ltd.",
+      "duration": "Feb 2017 – Present",
+      "description": ""
+    },
+    {
+      "title": "Full Stack Software Engineer",
+      "company": "Gizra ltd.",
+      "duration": "Dec 2015 – Jan 2017",
+      "description": "- Developing a system to connect between companies on varies projects, tracking, and managing them, for the European Union.\n- The Frontend is build with HTML5, CSS3, Bootstrap, JS, and jQuery. Backend written in PHP and Database in MySQL\n- Working with Git on GitHub, doing code reviews, and writing tests with Behat (runs on Travis-CI).\n- Builds a Docker image for the system, and integrate continuous deployment methods."
+    },
+    {
+      "title": "Junior Full Stack Software Engineer",
+      "company": "restart Group - IT | WEB | Mobile | People",
+      "duration": "Jul 2015 – Nov 2015",
+      "description": "- Part of a team that develops and maintains a financial system from end to end, that handles\nthousands of transactions to offshore bank accounts.\n- Implement a new Front-end design built with HTML5, CSS3, Bootstrap, JS and jQuery.\n- Back-end written in PHP, and DB in MySQL.\n- Implement new banks APIs."
+    },
+    {
+      "title": "Internet Expert",
+      "company": "Cellcom Israel, Ltd",
+      "duration": "Mar 2011 – Dec 2012",
+      "description": "- Tier 2 customer Support Expert Team.\n- Knowledge focal point for representatives at specialized Call centers.\n- Handling top level customer escalations and Gold customers support.\n- Experience working on UNIX-based switches with HP-UX, And with SAP & Amdocs systems.\n- Responsible for converting two call centers (Haifa and Beer Sheva) to specialized centers (provide training, and supervision throughout the beginning of the activity until go-live operation)."
+    },
+    {
+      "title": "Internet Service Representitive",
+      "company": "Cellcom Israel, Ltd",
+      "duration": "Nov 2009 – Feb 2011",
+      "description": "- Tier 1 customer Support Team.\n- Handling customer requirements and providing solutions on Internet, data and technical problems.\n- Rated at the 10% of the Company's outstanding employees in 2010 and a leader in service in the internet and technical Customer Service Center in 2011."
+    }
+  ],
+  "education": [
+    {
+      "name": "The Open University of Israel",
+      "degree_name": "Bachelor's degree",
+      "degree_secondary_title": "Computer Science and Business Administration",
+      "degree_grade": "GPA 76",
+      "duration": "2011 – 2016"
+    },
+    {
+      "name": "Ora Modi'im High School",
+      "degree_name": "High school diploma",
+      "degree_secondary_title": "Majoring in Computer Science",
+      "degree_grade": "GPA 82",
+      "duration": "2004 – 2008"
+    }
+  ]
+}

@@ -14,5 +14,8 @@ script:
   # Checking for pep8 issues.
   - pycodestyle --show-source --max-line-length=120 --show-pep8 .
 
-  # Running some tests.
+  # Running endpoints tests.
+  - apistar test
+
+  # Running unit tests.
   - pytest Testing.py

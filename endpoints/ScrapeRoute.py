@@ -1,6 +1,6 @@
 import time
 
-from apistar import Route, http
+from apistar import Route
 from selenium.common.exceptions import NoSuchElementException
 from endpoints.BaseRoute import BaseRoute
 from models.Profile import Profile

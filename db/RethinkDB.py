@@ -1,4 +1,5 @@
 import rethinkdb as r
+import time
 
 from tools.SettingsManager import SettingsManager
 
@@ -47,7 +48,9 @@ class RethinkDB(object):
 
         :return:
         """
-        return self.db.table_create(self.entity).run(self.r)
+        results = self.db.table_create(self.entity).run(self.r)
+        time.sleep(5)
+        return results
 
     def tableExists(self):
         """
@@ -56,6 +59,14 @@ class RethinkDB(object):
         :return:
         """
         return self.entity in self.db.table_list().run(self.r)
+
+    def deleteTable(self):
+        """
+        Deleting a table from the DB.
+
+        :return:
+        """
+        return self.db.table_drop(self.entity).run(self.r)
 
     def getTable(self):
         """
