@@ -58,10 +58,8 @@ class SearchRoute(BaseRoute):
         """
         Calculating the score for a user name.
 
-        If the text exists only in the title or the position current position - the score is 1.
-
-        If the text appears in the description of the user and the skills that's mean the user is matching for search
-        based on a tech. In that case the person is a good match and the score will be the number or endorsements.
+        Get the rank from the list of fields. Combine it with the amount of times the text appears in the experience
+        field. If the user has any educations - add the number of elements.
 
         :param text:
             The text the user searched for.
@@ -71,4 +69,19 @@ class SearchRoute(BaseRoute):
         :return:
             A score based on the object.
         """
-        return 1
+        # Get the rank.
+        skill_rank = 0
+
+        for skill in user_object['skills']:
+            if text in skill['skill']:
+                skill_rank = skill['rank']
+                # We found the skill. Break the loop.
+                break
+
+        # Get the amount of time from the experience.
+        appearing = 0
+        for experience in user_object['experience']:
+            if text in experience['description']:
+                appearing = appearing + 1
+
+        return int(skill_rank) + int(appearing) + len(user_object['education'])
