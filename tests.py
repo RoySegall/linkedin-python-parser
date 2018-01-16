@@ -12,3 +12,5 @@ def test_http_request():
     # Create three elements.
 
     # Start to run tests against the API.
+
+    assert 1 == 1
