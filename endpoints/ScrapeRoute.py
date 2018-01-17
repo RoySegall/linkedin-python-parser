@@ -1,3 +1,4 @@
+import pdb
 import time
 
 from apistar import Route
@@ -36,14 +37,13 @@ class ScrapeRoute(BaseRoute):
         self.login()
 
         # Pull the details and process them.
-        print(self.pull_details(user_id))
 
-        # details = self.process_results(self.pull_details(user_id))
+        details = self.process_results(self.pull_details(user_id))
 
-        # Print the user object.
+        # Close selenium.
         self.selenium.close()
 
-        return {}
+        return details
 
     def process_results(self, details):
         """
@@ -130,10 +130,6 @@ class ScrapeRoute(BaseRoute):
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         time.sleep(5)
 
-        associated_profiles = self.get_associated_profiles()
-        print(associated_profiles)
-        return
-
         for key, xpath in xpaths.items():
 
             if key in special:
@@ -152,6 +148,8 @@ class ScrapeRoute(BaseRoute):
                     print("An error with the element " + xpath)
                     continue
                 profile[key] = element.text
+
+        profile['associated_profiles'] = self.get_associated_profiles()
 
         return profile
 
@@ -284,27 +282,47 @@ class ScrapeRoute(BaseRoute):
 
         if not connections_link.is_displayed():
             print('The connections section is blocked or unreachable for now.')
+            pdb.set_trace()
             return {}
 
         # Go to the page.
         connections_link.click()
+
+        # Waiting for elements to appear.
         time.sleep(5)
 
-        base_xpath = "//div[contains(@class, 'search-results__cluster-content')]" \
-                     "//li"
+        base_xpath = "//div[contains(@class, 'search-results__cluster-content')]//ul[1]//li"
 
         number_of_connections = len(self.selenium.getElements(base_xpath))
-        print(number_of_connections)
-
         names = []
 
-        for i in range(1, number_of_connections + 1):
-            self.selenium.driver.execute_script("window.scrollBy(0, 400);")
-            time.sleep(5)
-            name_xpath = base_xpath + "[" + str(i) + "]//div[contains(@class, 'search-result__info')]" \
-                                                     "//a[contains(@class, 'search-result__result-link')]" \
-                                                     "//h3" \
-                                                     "//span[@class='name actor-name']"
-            names.append(self.selenium.getElement(name_xpath).text)
-        print(names)
-        return {}
+        times = 5
+        j = 0
+        while True:
+            if j > times:
+                break
+
+            for i in range(1, number_of_connections + 1):
+                self.selenium.driver.execute_script("window.scrollBy(0, 400);")
+                time.sleep(2)
+                name_xpath = base_xpath + "[" + str(i) + "]//div[contains(@class, 'search-result__info')]" \
+                                                         "//a[contains(@class, 'search-result__result-link')]" \
+                                                         "//h3" \
+                                                         "//span[@class='name actor-name']"
+                try:
+                    # Sometimes the element cannot be found but we we won't break the loop for that.
+                    names.append(self.selenium.getElement(name_xpath).text)
+                except NoSuchElementException:
+                    print('a')
+                    pass
+
+            try:
+                self.selenium.getElement('//ol[contains(@class,"results-paginator")]//button[@class="next"]').click()
+            except NoSuchElementException:
+                # There's no more next button - we got to the end of the list. Breaking the loop.
+                break
+
+            j = j + 1
+
+        pdb.set_trace()
+        return names
