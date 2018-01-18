@@ -1,6 +1,4 @@
-import pdb
 import time
-
 from apistar import Route
 from selenium.common.exceptions import NoSuchElementException
 from endpoints.BaseRoute import BaseRoute
@@ -114,8 +112,7 @@ class ScrapeRoute(BaseRoute):
             'skills': '//div[@class="pv-skill-entity__header"]',
             'experience': '//section[contains(@class, "experience-section")]//ul'
                           '//li[not(contains(@class, "artdeco-carousel"))]',
-            'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
-                         'section-info--has-no-more ember-view"]//li',
+            'education': '//section[contains(@class,"pv-profile-section education-section ember-view")]//ul//li',
         }
 
         #  Specify what is a special element so we could now how to handle it.
@@ -130,6 +127,12 @@ class ScrapeRoute(BaseRoute):
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         time.sleep(5)
 
+        # First get the associated people. We fire this part since a profile which not look valid may bump into popups
+        # that might prevent from selenium to go to the page.
+        profile['associated_profiles'] = self.get_associated_profiles()
+
+        # Go back to the of the profile.
+        self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         for key, xpath in xpaths.items():
 
             if key in special:
@@ -149,8 +152,6 @@ class ScrapeRoute(BaseRoute):
                     continue
                 profile[key] = element.text
 
-        profile['associated_profiles'] = self.get_associated_profiles()
-
         return profile
 
     def get_list_of_skills(self, xpath):
@@ -164,10 +165,13 @@ class ScrapeRoute(BaseRoute):
         """
         self.selenium.scroll_to_element(xpath)
 
-        # Todo: check if the button exists.
         time.sleep(10)
-        self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
-                                 "additional-skills artdeco-container-card-action-bar']").click()
+        try:
+            self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
+                                     "additional-skills artdeco-container-card-action-bar']").click()
+        except NoSuchElementException:
+            pass
+
         time.sleep(5)
 
         # Get all the list.
@@ -262,7 +266,6 @@ class ScrapeRoute(BaseRoute):
 
             institution = {}
 
-            # todo For some reason, roy-segall-304b054a, has 2 empty items. check why.
             for key, local_xpath in local_xpaths.items():
                 try:
                     institution[key] = self.selenium.getElement(base_xpath + local_xpath).text
@@ -282,7 +285,6 @@ class ScrapeRoute(BaseRoute):
 
         if not connections_link.is_displayed():
             print('The connections section is blocked or unreachable for now.')
-            pdb.set_trace()
             return {}
 
         # Go to the page.
@@ -296,15 +298,10 @@ class ScrapeRoute(BaseRoute):
         number_of_connections = len(self.selenium.getElements(base_xpath))
         names = []
 
-        times = 5
-        j = 0
         while True:
-            if j > times:
-                break
-
             for i in range(1, number_of_connections + 1):
                 self.selenium.driver.execute_script("window.scrollBy(0, 400);")
-                time.sleep(2)
+                time.sleep(1)
                 name_xpath = base_xpath + "[" + str(i) + "]//div[contains(@class, 'search-result__info')]" \
                                                          "//a[contains(@class, 'search-result__result-link')]" \
                                                          "//h3" \
@@ -313,7 +310,6 @@ class ScrapeRoute(BaseRoute):
                     # Sometimes the element cannot be found but we we won't break the loop for that.
                     names.append(self.selenium.getElement(name_xpath).text)
                 except NoSuchElementException:
-                    print('a')
                     pass
 
             try:
@@ -322,7 +318,4 @@ class ScrapeRoute(BaseRoute):
                 # There's no more next button - we got to the end of the list. Breaking the loop.
                 break
 
-            j = j + 1
-
-        pdb.set_trace()
         return names
