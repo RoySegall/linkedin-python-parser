@@ -2,7 +2,8 @@
 
 # Linked in parser
 
-This project parses LinkedIn profiles.
+Using this project you can parse Linkedin profile, store the data and
+search for matching candidates.
 
 ## First thing.
 Copy the example settings file to a `settings.yml`:
