@@ -28,13 +28,13 @@ def test_skills_searching():
     # Search by skills.
     json_response = client.post('/search-by-skills', json={'skill': 'Drupal'})
 
-    assert json_response.json()[0]['match'] == 13
+    assert json_response.json()[0]['match'] == 11
 
     # Search for JavaScript.
     json_response = client.post('/search-by-skills', json={'skill': 'JavaScript'})
     matches = {
         'nirgn': 18,
-        'roy-segall-304b054a': 18,
+        'roy-segall-304b054a': 16,
         'davidbronfen': 12
     }
 
