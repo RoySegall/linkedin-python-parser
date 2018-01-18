@@ -1,5 +1,4 @@
 import time
-
 from apistar import Route
 from selenium.common.exceptions import NoSuchElementException
 from endpoints.BaseRoute import BaseRoute
@@ -36,9 +35,10 @@ class ScrapeRoute(BaseRoute):
         self.login()
 
         # Pull the details and process them.
+
         details = self.process_results(self.pull_details(user_id))
 
-        # Print the user object.
+        # Close selenium.
         self.selenium.close()
 
         return details
@@ -101,6 +101,7 @@ class ScrapeRoute(BaseRoute):
         :return:
             The object of the person from linkdein.
         """
+
         # Specify the list of xpaths.
         xpaths = {
             'name': '//div[contains(@class, "information")]//h1',
@@ -111,8 +112,7 @@ class ScrapeRoute(BaseRoute):
             'skills': '//div[@class="pv-skill-entity__header"]',
             'experience': '//section[contains(@class, "experience-section")]//ul'
                           '//li[not(contains(@class, "artdeco-carousel"))]',
-            'education': '//ul[@class="pv-profile-section__section-info section-info pv-profile-section__'
-                         'section-info--has-no-more ember-view"]//li',
+            'education': '//section[contains(@class,"pv-profile-section education-section ember-view")]//ul//li',
         }
 
         #  Specify what is a special element so we could now how to handle it.
@@ -127,6 +127,12 @@ class ScrapeRoute(BaseRoute):
         self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         time.sleep(5)
 
+        # First get the associated people. We fire this part since a profile which not look valid may bump into popups
+        # that might prevent from selenium to go to the page.
+        profile['associated_profiles'] = self.get_associated_profiles()
+
+        # Go back to the of the profile.
+        self.selenium.getPage('https://www.linkedin.com/in/' + user_id)
         for key, xpath in xpaths.items():
 
             if key in special:
@@ -159,10 +165,13 @@ class ScrapeRoute(BaseRoute):
         """
         self.selenium.scroll_to_element(xpath)
 
-        # Todo: check if the button exists.
         time.sleep(10)
-        self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
-                                 "additional-skills artdeco-container-card-action-bar']").click()
+        try:
+            self.selenium.getElement("//button[@class='pv-profile-section__card-action-bar pv-skills-section__"
+                                     "additional-skills artdeco-container-card-action-bar']").click()
+        except NoSuchElementException:
+            pass
+
         time.sleep(5)
 
         # Get all the list.
@@ -257,7 +266,6 @@ class ScrapeRoute(BaseRoute):
 
             institution = {}
 
-            # todo For some reason, roy-segall-304b054a, has 2 empty items. check why.
             for key, local_xpath in local_xpaths.items():
                 try:
                     institution[key] = self.selenium.getElement(base_xpath + local_xpath).text
@@ -267,3 +275,47 @@ class ScrapeRoute(BaseRoute):
             institutions.append(institution)
 
         return institutions
+
+    def get_associated_profiles(self):
+        """
+        Get the list of all the associated profile with the account.
+        :return:
+        """
+        connections_link = self.selenium.getElement("//div[contains(@class, 'connections-section')]")
+
+        if not connections_link.is_displayed():
+            print('The connections section is blocked or unreachable for now.')
+            return {}
+
+        # Go to the page.
+        connections_link.click()
+
+        # Waiting for elements to appear.
+        time.sleep(5)
+
+        base_xpath = "//div[contains(@class, 'search-results__cluster-content')]//ul[1]//li"
+
+        number_of_connections = len(self.selenium.getElements(base_xpath))
+        names = []
+
+        while True:
+            for i in range(1, number_of_connections + 1):
+                self.selenium.driver.execute_script("window.scrollBy(0, 400);")
+                time.sleep(1)
+                name_xpath = base_xpath + "[" + str(i) + "]//div[contains(@class, 'search-result__info')]" \
+                                                         "//a[contains(@class, 'search-result__result-link')]" \
+                                                         "//h3" \
+                                                         "//span[@class='name actor-name']"
+                try:
+                    # Sometimes the element cannot be found but we we won't break the loop for that.
+                    names.append(self.selenium.getElement(name_xpath).text)
+                except NoSuchElementException:
+                    pass
+
+            try:
+                self.selenium.getElement('//ol[contains(@class,"results-paginator")]//button[@class="next"]').click()
+            except NoSuchElementException:
+                # There's no more next button - we got to the end of the list. Breaking the loop.
+                break
+
+        return names

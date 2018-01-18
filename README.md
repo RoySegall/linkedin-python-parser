@@ -21,6 +21,8 @@ is located in a place you know
 4. Register to linkedin and set the user credentials under the
 `linkedin` property in the settings file you created.
 
+*Please note*: If you want to scrape for associated people, the scraped
+profile need to be connected with you.
 
 ## Installation
 ```bash
