@@ -41,12 +41,28 @@ Awesome! Have a slice of pizza: :pizza:
 ## Rest endpoints
 
 ### Scraping
-Scraping a user is very easy. Create a `POST` request to
+Scraping a user is very easy. Create a `GET` request against
 `http://localhost:8080/scrape/{user_id}` when `user_id` it's the user
-ID.
+ID which you want to scrape.
 
 *You can ge the the user ID from the address.*
 
-### Searching
-The searching end point is very versatile - can search for people and
-skills at once.
+### Searching by added users
+In order to get a user with the name `John` you'll need to create a
+`POST` request against `http://localhost:8080/search-by-name` with a
+JSON payload as:
+```json
+{
+    "name": "John"
+}
+```
+
+### Searching by skill
+In order to get a user with a skill in `Go` you'll need to create a
+`POST` request against `http://localhost:8080/search-by-skills` with a
+JSON payload as:
+```json
+{
+    "skill": "Go"
+}
+```
